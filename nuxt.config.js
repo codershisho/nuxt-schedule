@@ -30,7 +30,8 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
     { path: '~/components/dialog', extensions: ['vue'] },
-    { path: '~/components/forms', extensions: ['vue'] }
+    { path: '~/components/forms', extensions: ['vue'] },
+    { path: '~/components/atoms', extensions: ['vue'] },
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -69,6 +70,7 @@ export default {
           success: colors.green.accent3,
         },
       },
+      options: { customProperties: true },
     },
   },
 

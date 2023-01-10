@@ -1,47 +1,38 @@
 <template>
   <div>
-    <v-toolbar elevation="0" color="cyan lighten-5">
-      <v-btn v-if="!detailFlag" color="primary" depressed @click="onNew">新規作成</v-btn>
-      <v-btn v-else color="primary" depressed @click="detailFlag = false">戻る</v-btn>
+    <v-toolbar id="project_toolbar" elevation="0" class="pa-0 mb-3">
+      <base-button v-if="!detailFlag" color="primary" icon="fa-solid fa-user" text="新規作成" @onClick="onNew"/>
+      <base-button v-else color="primary" icon="fa-sharp fa-solid fa-arrow-left" text="戻る" @onClick="detailFlag = false"/>
     </v-toolbar>
     <template v-if="!detailFlag">
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        class="elevation-0"
-        :loading="loading"
-        @click:row="onClickRow"
-      >
-        <template v-slot:[`item.actions`]="{ item }">
-          <v-btn color="primary" depressed text @click="onEdit(item)"
-            >編集</v-btn
-          >
+      <v-data-table :headers="headers" :items="items" class="elevation-0" :loading="loading" @click:row="onClickRow">
+        <template #[`item.name`]="{ item }">
+          <div class="font-weight-bold">{{ item.name }}</div>
+        </template>
+        <template #[`item.status`]="{ item }">
+          <v-chip color="success" outlined label>{{item.status}}</v-chip>
         </template>
       </v-data-table>
     </template>
     <template v-else>
-      <v-card>
-        aaa
-      </v-card>
+      <ProjectSub />
     </template>
-    <DialogBase :dialog="dialog" form="ProjectForm" @close="dialog = false" />
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
       headers: [
-        { text: 'ID', value: 'id', align: 'end' },
-        { text: 'Name', value: 'name' },
-        { text: 'バージョン', value: 'version' },
-        { text: 'ステータス', value: 'status' },
-        { text: '開始日', value: 'start_date' },
-        { text: '終了日', value: 'end_date' },
-        { text: '見積り工数', value: 'plan_cost', align: 'end' },
-        { text: '最終工数', value: 'fix_cost', align: 'end' },
-        { text: 'Actions', value: 'actions', align: 'center' },
+        { text: 'ID', value: 'id', align: 'end', class: 'table-header-custom' },
+        { text: 'Name', value: 'name', class: 'table-header-custom' },
+        { text: 'バージョン', value: 'version', class: 'table-header-custom' },
+        { text: 'ステータス', value: 'status', class: 'table-header-custom' },
+        { text: '開始日', value: 'start_date', class: 'table-header-custom' },
+        { text: '終了日', value: 'end_date', class: 'table-header-custom' },
+        { text: '見積り工数', value: 'plan_cost', align: 'end', class: 'table-header-custom' },
+        { text: '最終工数', value: 'fix_cost', align: 'end', class: 'table-header-custom' },
       ],
 
       items: [
@@ -70,11 +61,11 @@ export default {
       loading: false,
       dialog: false,
       detailFlag: false,
-    }
+    };
   },
 
   created() {
-    this.init()
+    this.init();
   },
 
   methods: {
@@ -88,19 +79,25 @@ export default {
     },
 
     onNew() {
-      this.dialog = true
-    },
-
-    onEdit(item) {
-      this.setProject(item)
-      this.dialog = true
+      this.setProject({});
+      this.detailFlag = true;
     },
 
     onClickRow(row) {
-      this.detailFlag = true
+      this.setProject(row);
+      this.detailFlag = true;
     },
 
     // TODO 登録更新削除
   },
-}
+};
 </script>
+<style>
+.table-header-custom {
+  background-color: #55ad5c;
+  color: white !important;
+}
+#project_toolbar > .v-toolbar__content {
+  padding: 0;
+}
+</style>
