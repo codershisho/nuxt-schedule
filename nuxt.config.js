@@ -10,6 +10,7 @@ export default {
     title: 'src',
     htmlAttrs: {
       lang: 'en',
+      dir: 'ltr'
     },
     meta: [
       { charset: 'utf-8' },
@@ -28,7 +29,8 @@ export default {
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
-    { path: '~/components/dialog', extensions: ['vue'] }
+    { path: '~/components/dialog', extensions: ['vue'] },
+    { path: '~/components/forms', extensions: ['vue'] }
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules

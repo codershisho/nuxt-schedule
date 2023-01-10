@@ -5,9 +5,11 @@
 </template>
 <script>
 import MemberForm from '../forms/MemberForm.vue'
+import ProjectForm from '../forms/ProjectForm.vue'
 export default {
   components: {
-    MemberForm
+    MemberForm,
+    ProjectForm
   },
 
   props: {

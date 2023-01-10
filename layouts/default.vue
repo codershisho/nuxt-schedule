@@ -1,10 +1,6 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      app
-    >
+    <v-navigation-drawer v-model="drawer" fixed app>
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -44,8 +40,13 @@ export default {
       items: [
         {
           icon: 'mdi-chart-bubble',
-          title: 'Member',
-          to: '/member',
+          title: 'Members',
+          to: '/members',
+        },
+        {
+          icon: 'mdi-apps',
+          title: 'Projects',
+          to: '/projects',
         },
         {
           icon: 'mdi-apps',
