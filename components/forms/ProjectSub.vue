@@ -18,10 +18,10 @@
           メモ
         </div>
       </v-tab>
-      <v-tab-item class="pa-0 ma-0">
+      <v-tab-item class="pa-0 ma-0" transition="slide-y-reverse-transition">
         <ProjectForm />
       </v-tab-item>
-      <v-tab-item>
+      <v-tab-item class="pa-0 ma-0" transition="slide-y-reverse-transition">
       </v-tab-item>
     </v-tabs>
   </div>
