@@ -1,22 +1,19 @@
 <template>
   <div>
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      class="elevation-0"
-      :loading="loading"
-    >
-      <template v-slot:[`top`]>
-        <v-toolbar elevation="0">
-          <v-spacer></v-spacer>
-          <v-btn color="primary" depressed @click="onNew">新規作成</v-btn>
-        </v-toolbar>
-      </template>
-      <template v-slot:[`item.actions`]={item}>
-        <v-btn color="primary" depressed text @click="onEdit(item)">編集</v-btn>
-      </template>
-    </v-data-table>
-    <DialogBase :dialog="dialog" form="MemberForm" @close="dialog=false" />
+    <v-toolbar id="project_toolbar" elevation="0" class="mb-3">
+      <base-button v-if="!detailFlag" color="primary" icon="fa-solid fa-user" text="新規作成" @onClick="onNew"/>
+      <base-button v-else color="primary" icon="fa-sharp fa-solid fa-arrow-left" text="戻る" @onClick="detailFlag = false"/>
+    </v-toolbar>
+    <template v-if="!detailFlag">
+      <v-data-table :headers="headers" :items="items" class="elevation-0 pa-4" :loading="loading" @click:row="onEdit">
+          <template #[`item.name`]="{ item }">
+            <div class="font-weight-bold">{{ item.name }}</div>
+          </template>
+      </v-data-table>
+    </template>
+    <template v-else>
+      <MemberForm />
+    </template>
   </div>
 </template>
 <script>
@@ -25,9 +22,8 @@ export default {
   data() {
     return {
       headers: [
-        { text: 'ID', value: 'id', align: 'end' },
-        { text: 'Name', value: 'name' },
-        { text: 'Actions', value: 'actions', align: 'center' },
+        { text: 'ID', value: 'id', class: 'table-header-custom' },
+        { text: 'Name', value: 'name', class: 'table-header-custom' },
       ],
 
       items: [
@@ -36,32 +32,33 @@ export default {
       ],
 
       loading: false,
-      dialog: false
-    }
+      detailFlag: false,
+    };
   },
 
   created() {
-    this.init()
+    this.init();
   },
 
   methods: {
     ...mapActions('member', ['setMember']),
 
-    init: async function () {
-      this.loading = true
-      const res = await this.$axios.get('/nuxt-schedule/members')
-      this.items = res.data
-      this.loading = false
+    init() {
+      this.loading = true;
+      // const res = await this.$axios.get('/nuxt-schedule/members')
+      // this.items = res.data
+      this.loading = false;
     },
 
     onNew() {
-      this.dialog = true;
+      this.setMember({});
+      this.detailFlag = true;
     },
 
     onEdit(item) {
       this.setMember(item);
-      this.dialog = true;
+      this.detailFlag = true;
     },
   },
-}
+};
 </script>

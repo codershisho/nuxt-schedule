@@ -2,10 +2,13 @@
   <div class="d-flex pa-5">
     <div style="width:20%">
       <template v-for="(history, i) in histories">
-        <div :key="i" class="history-list" @click="open(history)">{{ history.created_at }}</div>
+        <!-- <div :key="i" class="history-list" @click="open(history)">{{ history.created_at }}</div> -->
+        <v-card :key="i" @click="open(history)" class="pa-2 mb-2 info white--text text-center">
+          {{ history.created_at }}
+        </v-card>
       </template>
     </div>
-    <div class="pa-3" style="width:80%">
+    <div class="px-3" style="width:80%">
       <v-textarea
         v-model="memo"
         outlined
