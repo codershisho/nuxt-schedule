@@ -32,6 +32,7 @@ export default {
     { path: '~/components/dialog', extensions: ['vue'] },
     { path: '~/components/forms', extensions: ['vue'] },
     { path: '~/components/atoms', extensions: ['vue'] },
+    { path: '~/components/templates', extensions: ['vue'] },
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -60,14 +61,14 @@ export default {
     theme: {
       dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
+        light: {
+          primary: "#62a2c1",
+          accent: "#F0F66E",
+          secondary: "#0A2E36",
+          info: "#436436",
           warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
+          error: "#FE5F55",
+          success: "#036D19",
         },
       },
       options: { customProperties: true },

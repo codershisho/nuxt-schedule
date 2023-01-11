@@ -1,39 +1,37 @@
 <template>
-  <div>
-    <div class="pa-5">
-      <div>
-        <v-text-field v-model="model.name" label="案件名" outlined></v-text-field>
+  <div class="pa-5">
+    <div>
+      <v-text-field v-model="model.name" label="案件名" outlined></v-text-field>
+    </div>
+    <div class="d-flex">
+      <div class="form-row-item--first">
+        <v-text-field v-model="model.version" label="バージョン" outlined></v-text-field>
       </div>
-      <div class="d-flex">
-        <div class="form-row-item--first">
-          <v-text-field v-model="model.version" label="バージョン" outlined></v-text-field>
-        </div>
-        <div class="form-row-item--second">
-          <v-text-field v-model="model.status" label="ステータス" outlined></v-text-field>
-        </div>
+      <div class="form-row-item--second">
+        <v-text-field v-model="model.status" label="ステータス" outlined></v-text-field>
       </div>
-      <div class="d-flex">
-        <div class="form-row-item--first">
-          <v-text-field v-model="model.start_date" label="開始日" outlined></v-text-field>
-        </div>
-        <div class="form-row-item--second">
-          <v-text-field v-model="model.end_date" label="終了日" outlined></v-text-field>
-        </div>
+    </div>
+    <div class="d-flex">
+      <div class="form-row-item--first">
+        <v-text-field v-model="model.start_date" label="開始日" outlined></v-text-field>
       </div>
-      <div class="d-flex">
-        <div class="form-row-item--first">
-          <v-text-field v-model="model.plan_cost" label="見積工数" outlined></v-text-field>
-        </div>
-        <div class="form-row-item--second">
-          <v-text-field v-model="model.fix_cost" label="最終工数" outlined></v-text-field>
-        </div>
+      <div class="form-row-item--second">
+        <v-text-field v-model="model.end_date" label="終了日" outlined></v-text-field>
       </div>
-      <div>
-        <v-text-field v-model="model.name" label="メンバー" outlined></v-text-field>
+    </div>
+    <div class="d-flex">
+      <div class="form-row-item--first">
+        <v-text-field v-model="model.plan_cost" label="見積工数" outlined></v-text-field>
       </div>
-      <div>
-        <base-button color="green darken-1" dark icon="fa-solid fa-circle-plus" text="登録" @onClick="onStore"/>
+      <div class="form-row-item--second">
+        <v-text-field v-model="model.fix_cost" label="最終工数" outlined></v-text-field>
       </div>
+    </div>
+    <div>
+      <v-text-field v-model="model.name" label="メンバー" outlined></v-text-field>
+    </div>
+    <div>
+      <base-button color="green darken-1" dark icon="fa-solid fa-circle-plus" text="登録" @onClick="onStore" />
     </div>
   </div>
 </template>

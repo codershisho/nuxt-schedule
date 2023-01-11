@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-toolbar id="project_toolbar" elevation="0" class="pa-0 mb-3">
+    <v-toolbar id="project_toolbar" elevation="0" class="mb-3">
       <base-button v-if="!detailFlag" color="primary" icon="fa-solid fa-user" text="新規作成" @onClick="onNew"/>
       <base-button v-else color="primary" icon="fa-sharp fa-solid fa-arrow-left" text="戻る" @onClick="detailFlag = false"/>
     </v-toolbar>
     <template v-if="!detailFlag">
-      <v-data-table :headers="headers" :items="items" class="elevation-0" :loading="loading" @click:row="onClickRow">
+      <v-data-table :headers="headers" :items="items" class="elevation-0 pa-4" :loading="loading" @click:row="onClickRow">
         <template #[`item.name`]="{ item }">
           <div class="font-weight-bold">{{ item.name }}</div>
         </template>
@@ -96,8 +96,5 @@ export default {
 .table-header-custom {
   background-color: #55ad5c;
   color: white !important;
-}
-#project_toolbar > .v-toolbar__content {
-  padding: 0;
 }
 </style>
