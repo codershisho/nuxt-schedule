@@ -2,13 +2,7 @@
   <v-app dark>
     <v-navigation-drawer v-model="drawer" fixed app dark color="primary">
       <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
+        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -18,12 +12,12 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar fixed app flat color="white">
+    <!-- <v-app-bar fixed app flat color="white">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer />
-    </v-app-bar>
-    <v-main style="background-color:#e7e7e7">
+    </v-app-bar> -->
+    <v-main style="background-color: #e7e7e7">
       <v-container>
         <Nuxt />
       </v-container>
@@ -55,7 +49,16 @@ export default {
         },
       ],
       title: 'Vuetify.js',
-    }
+    };
   },
-}
+};
 </script>
+<style>
+html {
+  font-family: 'Noto Sans JP', sans-serif !important;
+}
+.table-header-custom {
+  background-color: #525252;
+  color: white !important;
+}
+</style>

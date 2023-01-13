@@ -8,54 +8,77 @@
         <v-text-field v-model="model.version" label="バージョン" outlined></v-text-field>
       </div>
       <div class="form-row-item--second">
-        <v-text-field v-model="model.status" label="ステータス" outlined></v-text-field>
+        <v-select
+          v-model="model.status"
+          :items="statusList"
+          item-text="status_name"
+          item-value="status"
+          label="ステータス"
+          outlined
+        ></v-select>
       </div>
     </div>
     <div class="d-flex">
       <div class="form-row-item--first">
-        <v-text-field v-model="model.start_date" label="開始日" outlined></v-text-field>
+        <date-picker label="開始日" v-model="model.start_date" />
       </div>
       <div class="form-row-item--second">
-        <v-text-field v-model="model.end_date" label="終了日" outlined></v-text-field>
+        <date-picker label="終了日" v-model="model.end_date" />
       </div>
     </div>
     <div class="d-flex">
       <div class="form-row-item--first">
-        <v-text-field v-model="model.plan_cost" label="見積工数" outlined></v-text-field>
+        <v-text-field v-model="model.plan_cost" label="見積工数" outlined type="Number"></v-text-field>
       </div>
       <div class="form-row-item--second">
-        <v-text-field v-model="model.fix_cost" label="最終工数" outlined></v-text-field>
+        <v-text-field v-model="model.fix_cost" label="最終工数" outlined type="Number"></v-text-field>
       </div>
     </div>
     <div>
       <v-text-field v-model="model.name" label="メンバー" outlined></v-text-field>
     </div>
     <div>
-      <base-button color="green darken-1" dark icon="fa-solid fa-circle-plus" text="登録" @onClick="onStore" />
+      <base-button color="green darken-1" dark icon="fa-solid fa-circle-plus" :text="buttonText" @onClick="onStore" />
     </div>
+    <v-snackbar v-model="snackbar" :timeout="timeout" top color="yellow darken-3">
+      <strong>{{ apiMessage }}</strong>
+    </v-snackbar>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import DatePicker from '../atoms/DatePicker.vue';
 export default {
+  components: { DatePicker },
   data() {
     return {
-      model: {
-        name: '',
-        image: '',
-      },
+      model: {},
+
+      statusList: [
+        { status: 1, status_name: '新規' },
+        { status: 2, status_name: '着手中' },
+        { status: 3, status_name: 'ステイ中' },
+        { status: 4, status_name: '完了' },
+      ],
 
       mode: 'new',
-      tab: null,
+      snackbar: false,
+      timeout: 2000,
+      apiMessage: '',
     };
   },
 
   mounted() {
-    this.model = this.getProjectModel;
+    this.mode = !Object.keys(this.getProjectModel).length ? 1 : 2;
+    this.model = {...this.getProjectModel};
   },
 
   computed: {
     ...mapGetters('project', ['getProjectModel']),
+
+    buttonText() {
+      return this.mode === 1 ? '登録' : '更新';
+    }
   },
 
   methods: {
@@ -63,12 +86,36 @@ export default {
       this.$emit('close');
     },
 
-    onStore: async function () {
-      // const res = await this.$axios.post('/nuxt-schedule/members', this.model)
-      // console.log(res)
+    onStore() {
+      if (this.mode === 1) {
+        // new
+        this.create();
+        return;
+      }
+
+      // update
+      this.update();
     },
 
-    // TODO 更新をやる
+    create: async function() {
+      const res = await this.$axios.post('/nuxt-schedule/projects', this.model);
+      if (res.data.message) this.setApiMessage(res.data.message);
+    },
+
+    update: async function() {
+      const res = await this.$axios.put('/nuxt-schedule/projects/' + this.model.id, this.model);
+      if (res.data.message) this.setApiMessage(res.data.message);
+    },
+
+    setApiMessage(msg) {
+      this.apiMessage = msg;
+      this.snackbar = true;
+    },
+
+    // TODO 削除
+    // TODO メモの登録
+    // TODO メモのDB
+    // TODO メモの履歴取得
   },
 };
 </script>

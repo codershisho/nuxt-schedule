@@ -40,13 +40,21 @@ export default {
     this.init();
   },
 
+  watch: {
+    detailFlag: function(newVal, oldVal) {
+      if(!newVal) {
+        this.init();
+      }
+    }
+  },
+
   methods: {
     ...mapActions('member', ['setMember']),
 
-    init() {
+    init: async function() {
       this.loading = true;
-      // const res = await this.$axios.get('/nuxt-schedule/members')
-      // this.items = res.data
+      const res = await this.$axios.get('/nuxt-schedule/members')
+      this.items = res.data
       this.loading = false;
     },
 
