@@ -23,6 +23,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
+import Images from '@/util/images.js';
 export default {
   data() {
     return {
@@ -74,9 +75,7 @@ export default {
     },
 
     toSvg(image) {
-      const blob = new Blob([image], { type: 'image/svg+xml' });
-      const url = window.URL.createObjectURL(blob);
-      return url;
+      return Images.toSvg(image);
     }
   },
 };

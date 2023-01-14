@@ -8,14 +8,7 @@
         <v-text-field v-model="model.version" label="バージョン" outlined></v-text-field>
       </div>
       <div class="form-row-item--second">
-        <v-select
-          v-model="model.status"
-          :items="statusList"
-          item-text="status_name"
-          item-value="status"
-          label="ステータス"
-          outlined
-        ></v-select>
+        <v-select v-model="model.status" :items="statusList" item-text="status_name" item-value="status" label="ステータス" outlined></v-select>
       </div>
     </div>
     <div class="d-flex">
@@ -35,7 +28,33 @@
       </div>
     </div>
     <div>
-      <v-text-field v-model="model.name" label="メンバー" outlined></v-text-field>
+      <v-autocomplete
+        v-model="model.members"
+        :items="members"
+        outlined
+        chips
+        label="メンバー"
+        item-text="name"
+        item-value="id"
+        multiple
+      >
+        <template v-slot:selection="data">
+          <v-chip v-bind="data.attrs" :input-value="data.selected" @click="data.select">
+            <v-avatar left>
+              <v-img :src="toSvg(data.item.image)"></v-img>
+            </v-avatar>
+            {{ data.item.name }}
+          </v-chip>
+        </template>
+        <template v-slot:item="data">
+          <v-list-item-avatar>
+            <v-img :src="toSvg(data.item.image)"></v-img>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>{{ data.item.name }}</v-list-item-title>
+          </v-list-item-content>
+        </template>
+      </v-autocomplete>
     </div>
     <div>
       <base-button color="green darken-1" dark icon="fa-solid fa-circle-plus" :text="buttonText" @onClick="onStore" />
@@ -47,9 +66,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import DatePicker from '../atoms/DatePicker.vue';
+import Images from '@/util/images.js';
 export default {
-  components: { DatePicker },
   data() {
     return {
       model: {},
@@ -61,6 +79,8 @@ export default {
         { status: 4, status_name: '完了' },
       ],
 
+      members: [],
+
       mode: 'new',
       snackbar: false,
       timeout: 2000,
@@ -70,7 +90,11 @@ export default {
 
   mounted() {
     this.mode = !Object.keys(this.getProjectModel).length ? 1 : 2;
-    this.model = {...this.getProjectModel};
+    this.model = { ...this.getProjectModel };
+    this.searchMemner();
+    if(this.mode === 2) {
+      this.model.members = this.model.fix_members;
+    }
   },
 
   computed: {
@@ -78,12 +102,13 @@ export default {
 
     buttonText() {
       return this.mode === 1 ? '登録' : '更新';
-    }
+    },
   },
 
   methods: {
-    close() {
-      this.$emit('close');
+    searchMemner: async function () {
+      const res = await this.$axios.get('/nuxt-schedule/members');
+      this.members = res.data;
     },
 
     onStore() {
@@ -97,12 +122,12 @@ export default {
       this.update();
     },
 
-    create: async function() {
+    create: async function () {
       const res = await this.$axios.post('/nuxt-schedule/projects', this.model);
       if (res.data.message) this.setApiMessage(res.data.message);
     },
 
-    update: async function() {
+    update: async function () {
       const res = await this.$axios.put('/nuxt-schedule/projects/' + this.model.id, this.model);
       if (res.data.message) this.setApiMessage(res.data.message);
     },
@@ -110,6 +135,10 @@ export default {
     setApiMessage(msg) {
       this.apiMessage = msg;
       this.snackbar = true;
+    },
+
+    toSvg(image) {
+      return Images.toSvg(image);
     },
 
     // TODO 削除
