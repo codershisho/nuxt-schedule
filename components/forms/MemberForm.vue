@@ -4,6 +4,12 @@
       <v-text-field label="氏名" outlined v-model="model.name"></v-text-field>
     </div>
     <div>
+      <v-file-input accept=".svg" label="ユーザー画像" prepend-icon="mdi-camera" v-model="model.image"></v-file-input>
+    </div>
+    <div>
+      <v-img :src="image_pre" max-height="200" max-width="200" class="mb-5" />
+    </div>
+    <div>
       <base-button color="green darken-1" dark icon="fa-solid fa-circle-plus" text="登録" @onClick="onStore" />
       <base-button v-if="mode != 1" color="error" dark icon="fa-solid fa-circle-minus" text="削除" @onClick="onDelete" />
     </div>
@@ -31,11 +37,22 @@ export default {
 
   mounted() {
     this.mode = !Object.keys(this.getMemberModel).length ? 1 : 2;
-    this.model = { ...this.getMemberModel };
+    if(this.mode !== 1) {
+      this.model = { ...this.getMemberModel };
+    }
   },
 
   computed: {
     ...mapGetters('member', ['getMemberModel']),
+
+    image_pre() {
+      if(this.model.image === null || Object.keys(this.model).length === 0) {
+        return 'bb';
+      }
+      const blob = new Blob([this.model.image], { type: 'image/svg+xml' });
+      const url = window.URL.createObjectURL(blob);
+      return url;
+    }
   },
 
   methods: {
@@ -55,7 +72,18 @@ export default {
     },
 
     create: async function () {
-      const res = await this.$axios.post('/nuxt-schedule/members', this.model);
+      const data = new FormData();
+      data.append("image", this.model.image);
+      data.append("name", this.model.name);
+      console.log(data);
+
+      const config = {
+        headers: {
+        'content-type': 'multipart/form-data'
+        }
+      };
+
+      const res = await this.$axios.post('/nuxt-schedule/members', data, config);
       if (res.data.message) this.setApiMessage(res.data.message);
     },
 

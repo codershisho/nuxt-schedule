@@ -7,7 +7,12 @@
     <template v-if="!detailFlag">
       <v-data-table :headers="headers" :items="items" class="elevation-0 pa-4" :loading="loading" @click:row="onEdit">
           <template #[`item.name`]="{ item }">
-            <div class="font-weight-bold">{{ item.name }}</div>
+            <div class="d-flex pa-2">
+              <v-avatar size="38" class="mr-3">
+                <v-img :src="toSvg(item.image)"></v-img>
+              </v-avatar>
+              <div class="font-weight-bold">{{ item.name }}</div>
+            </div>
           </template>
       </v-data-table>
     </template>
@@ -67,6 +72,12 @@ export default {
       this.setMember(item);
       this.detailFlag = true;
     },
+
+    toSvg(image) {
+      const blob = new Blob([image], { type: 'image/svg+xml' });
+      const url = window.URL.createObjectURL(blob);
+      return url;
+    }
   },
 };
 </script>
