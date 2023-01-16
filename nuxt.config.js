@@ -29,7 +29,9 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    { src: '@/plugins/quill', mode: 'client' },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
@@ -70,7 +72,7 @@ export default {
           primary: "#37474F",
           accent: "#F0F66E",
           secondary: "#0A2E36",
-          info: "#436436",
+          info: "#5a808b",
           warning: colors.amber.base,
           error: "#FE5F55",
           success: "#036D19",
